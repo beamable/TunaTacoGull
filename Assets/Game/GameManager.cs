@@ -6,6 +6,7 @@ using Beamable.Common;
 using Beamable.Experimental.Api.Lobbies;
 using Beamable.Player;
 using Beamable.Server.Clients;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -25,6 +26,7 @@ public class GameManager : MonoBehaviour
     public TMP_Text moveLabelText;
     public TMP_Text winLoseText;
     public TMP_Text winLoseDescriptionText;
+    public TMP_Text winHistoryText;
     public TMP_InputField joinCodeInput;
     public TMP_InputField aliasInput;
 
@@ -68,6 +70,7 @@ public class GameManager : MonoBehaviour
         otherPlayerHintPreview.gameObject.SetActive(false);
 
         statusText.text = "";
+        winHistoryText.text = "";
         
         hostGameButton.interactable = false;
         joinGameButton.interactable = false;
@@ -78,6 +81,12 @@ public class GameManager : MonoBehaviour
         await _context.OnReady;
         await _context.Accounts.Refresh();
         await _context.Lobby.Refresh();
+        
+        _client = _context.Microservices().TunaTacoGull();
+
+        var winCount = await _client.GetWinCount();
+        winHistoryText.text = $"wins: {winCount}";
+        
         
         _lobby = _context.Lobby;
         _lobby.OnUpdated += () =>
@@ -99,7 +108,6 @@ public class GameManager : MonoBehaviour
             OnSubmitAlias(_aliasValue);
         }
 
-        _client = _context.Microservices().TunaTacoGull();
 
         hostGameButton.onClick.AddListener(HostGame);
         joinGameButton.onClick.AddListener(JoinGame);
@@ -108,6 +116,11 @@ public class GameManager : MonoBehaviour
         hintSelection.selectionChanged += HintChanged;
         actualSelection.selectionChanged += SelectActual;
 
+        _context.Api.NotificationService.Subscribe("move", _ =>
+        {
+            otherPlayerHintPreview.DOPunchScale(Vector3.one, .25f);
+        });
+        
         _context.Api.NotificationService.Subscribe<GameState>("game", game =>
         {
             _gameState = game;

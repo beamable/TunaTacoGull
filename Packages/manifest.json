@@ -1,7 +1,8 @@
 {
   "dependencies": {
-    "com.beamable": "2.1.1",
-    "com.beamable.server": "2.1.1",
+    "com.beamable": "2.1.2",
+    "com.beamable.server": "2.1.2",
+    "com.coldservice": "file:/Users/chrishanna/SAM/UpmShare",
     "com.unity.ai.navigation": "2.0.4",
     "com.unity.collab-proxy": "2.7.1",
     "com.unity.ide.rider": "3.0.31",

@@ -32,6 +32,16 @@ namespace Beamable.Server.Clients
         }
         
         /// <summary>
+        /// Call the GetWinCount method on the TunaTacoGull microservice
+        /// <see cref="Beamable.TunaTacoGull.TunaTacoGull.GetWinCount"/>
+        /// </summary>
+        public Beamable.Common.Promise<int> GetWinCount()
+        {
+            System.Collections.Generic.Dictionary<string, object> serializedFields = new System.Collections.Generic.Dictionary<string, object>();
+            return this.Request<int>("TunaTacoGull", "GetWinCount", serializedFields);
+        }
+        
+        /// <summary>
         /// Call the CreateGame method on the TunaTacoGull microservice
         /// <see cref="Beamable.TunaTacoGull.TunaTacoGull.CreateGame"/>
         /// </summary>

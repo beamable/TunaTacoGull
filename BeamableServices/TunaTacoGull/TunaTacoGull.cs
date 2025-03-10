@@ -11,9 +11,16 @@ namespace Beamable.TunaTacoGull
 	public partial class TunaTacoGull : Microservice
 	{
 		[ClientCallable]
+		public async Promise<int> GetWinCount()
+		{
+			var collection = await Storage.DatabaseCollection<GameState>();
+			var count = await collection.CountDocumentsAsync(gameState => gameState.winningPlayer == Context.UserId);
+			return (int)count;
+		}
+		
+		[ClientCallable]
 		public async Promise<GameState> CreateGame(long hostPlayerId, long joinPlayerId)
 		{
-			// TODO: remove lobbyId
 			var collection = await Storage.DatabaseCollection<GameState>();
 			var gameState = new GameState
 			{
@@ -64,6 +71,7 @@ namespace Beamable.TunaTacoGull
 
 			// save the move
 			await collection.ReplaceOneAsync(gs => gs.Id == matchId, gameState);
+			await Services.Notifications.NotifyPlayer(otherPlayer.playerId, "move", "");
 
 
 			if (otherPlayer.actual == UserSelection.None)
