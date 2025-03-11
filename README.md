@@ -10,7 +10,7 @@ The rules are simple,
    
 ## Getting Started
 
-To run this sample, you'll need to have Unity 6 installed, Dotnet 8.0.302, and have a valid account with Beamable. 
+To run this sample, you'll need to have Unity 6 installed, Dotnet 8.0.302, and have a valid account with [Beamable](https://docs.beamable.com/docs/beamable-overview). 
 Open the Unity project, and enter the `Scenes/game.unity` scene. 
 
 Use the Beamable button to open the _Beam Services_ window, and start the Microservice by clicking the play button. 
